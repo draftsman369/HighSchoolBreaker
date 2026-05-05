@@ -114,8 +114,30 @@
                 },
                 {
                     "name": "",
+                    "id": "78fc7781-5745-470c-aa1a-3cde4ddd26a1",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sneak",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "60c53d2f-a923-4e29-9f42-224658add3f2",
                     "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3b493ff8-189b-431d-864f-31f0d6ae6313",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

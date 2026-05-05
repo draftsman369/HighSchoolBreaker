@@ -6,12 +6,12 @@ public class LevelLoader : MonoBehaviour
 {
     public static LevelLoader Instance { get; private set; }
 
-    private Animator animator;
+    public Animator animator;
 
     private void Awake()
     {
         Instance = this;
-        animator = GetComponent<Animator>();
+        //animator = GetComponent<Animator>();
     }
 
     public void ReloadLevel()
@@ -24,6 +24,7 @@ public class LevelLoader : MonoBehaviour
         yield return new WaitForSeconds(3f);
 
         animator.SetTrigger("Transition");
+        Debug.Log("Starting level reload...");
 
         yield return new WaitForSeconds(2f);
 

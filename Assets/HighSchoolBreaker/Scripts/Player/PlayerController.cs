@@ -143,5 +143,7 @@ public class PlayerController : MonoBehaviour
     public void SetGameOver()
     {
         IsGameOver = true;
+        LevelLoader.Instance.ReloadLevel();
+        Debug.LogWarning("Game Over!");
     }
 }

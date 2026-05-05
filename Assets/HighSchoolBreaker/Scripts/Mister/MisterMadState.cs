@@ -7,6 +7,7 @@ public class MisterMadState : MisterState
     public override void Enter()
     {
         controller.agent.isStopped = true;
+        PlayerController.Instance.SetGameOver();
         animator.SetTrigger("Mad");
     }
 

@@ -11,6 +11,7 @@ public class MisterWonderState : MisterState
     {
         controller.agent.isStopped = true;
         Debug.LogWarning("Wondering");
+        controller.animator.SetTrigger("Wondering");
         base.Enter();
     }
 
@@ -38,5 +39,6 @@ public class MisterWonderState : MisterState
         base.Exit();
         controller.agent.isStopped = false;
         wonderTimer = 0f;
+        controller.animator.ResetTrigger("Wondering");
     }
 }

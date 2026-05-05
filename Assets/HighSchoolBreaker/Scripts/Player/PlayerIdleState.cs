@@ -7,7 +7,7 @@ public class PlayerIdleState : State
         player.UpdateAnimations();
 
         if (player.IsGameOver)
-            return;
+            player.ChangeState(new PlayerCaughtState(player));
 
         if (player.IsMoving && player.IsSneaking)
         {

@@ -7,6 +7,7 @@ public class MisterInvestigateState : MisterState
     public override void Enter()
     {
         Debug.LogWarning("Investigating Noise");
+        controller.animator.SetTrigger("Investigating");
         base.Enter();
     }
 
@@ -23,6 +24,7 @@ public class MisterInvestigateState : MisterState
 
     public override void Exit()
     {
+        controller.animator.ResetTrigger("Investigating");
         base.Exit();
     }
 }
