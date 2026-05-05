@@ -39,6 +39,10 @@ public class NoiseEmitter : MonoBehaviour
 
     private void MakeNoise()
     {
+        if(playerController.IsHidden)
+        {
+            return;
+        }
 
         Collider[] hits = Physics.OverlapSphere(
             transform.position,

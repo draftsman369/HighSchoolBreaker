@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -8,11 +9,16 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     [SerializeField] private Rigidbody playerRigidbody;
     [SerializeField] private Animator playerAnimator;
+    private Collider playerCollider;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float sneakSpeed = 2f;
     [SerializeField] private float turnSpeed = 10f;
+
+    [Header("Screaming parameters")]
+    [SerializeField] private float noiseRadius = 5f;
+    [SerializeField] private LayerMask patrollerMask;
 
     private Vector2 moveInput;
     private Vector3 moveDirection;
@@ -36,6 +42,7 @@ public class PlayerController : MonoBehaviour
         IsHidden = true;
 
         playerVisual.SetActive(false);
+        playerCollider.enabled = false;
         enabled = false;
 
         transform.position = hidePoint.position;
@@ -53,6 +60,7 @@ public class PlayerController : MonoBehaviour
     public void ExitLocker()
     {
         IsHidden = false;
+        playerCollider.enabled = true;
 
         playerVisual.SetActive(true);
         enabled = true;
@@ -73,11 +81,31 @@ public class PlayerController : MonoBehaviour
 
         if (playerAnimator == null)
             playerAnimator = GetComponent<Animator>();
+
+        if (playerCollider == null)
+            playerCollider = GetComponent<Collider>();
     }
 
     private void Start()
     {
         ChangeState(new PlayerIdleState(this));
+
+        InputReader.Instance.OnScreamAction += OnScreamAction;
+    }
+
+    private void OnEnable()
+    {
+        InputReader.Instance.OnScreamAction += OnScreamAction;
+    }
+
+    private void OnDisable()
+    {
+        InputReader.Instance.OnScreamAction -= OnScreamAction;
+    }
+
+    public void OnScreamAction(object sender, EventArgs e)
+    {
+        ChangeState(new PlayerScaringState(this));
     }
 
 
@@ -146,4 +174,33 @@ public class PlayerController : MonoBehaviour
         LevelLoader.Instance.ReloadLevel();
         Debug.LogWarning("Game Over!");
     }
+
+    public void Boo()
+    {
+        playerAnimator.SetTrigger("Boo");
+
+
+        Collider[] hits = Physics.OverlapSphere(
+            transform.position,
+            noiseRadius,
+            patrollerMask
+        );
+
+        foreach (Collider hit in hits)
+        {
+            MisterController mister = hit.GetComponentInParent<MisterController>();
+
+            if (mister != null)
+            {
+                mister.HearNoise(transform.position);
+            }
+        }
+    }
+
+    public void ResetbooTrigger()
+    {
+        playerAnimator.ResetTrigger("Boo");
+    }
+
+
 }

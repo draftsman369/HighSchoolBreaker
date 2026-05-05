@@ -6,6 +6,7 @@ public class InputReader : MonoBehaviour
 {
 
     public event EventHandler OnInteractAction;
+    public event EventHandler OnScreamAction;
 
     public static InputReader Instance;
 
@@ -16,6 +17,8 @@ public class InputReader : MonoBehaviour
 
     private bool isSneaking;
     public bool IsSneaking => isSneaking;
+    private bool isScreaming;
+    public bool IsScreaming => isScreaming;
 
     private void Awake()
     {
@@ -29,11 +32,18 @@ public class InputReader : MonoBehaviour
         playerInputs = new PlayerInputs();
 
         playerInputs.Gameplay.Interact.performed += OnInteract;
+        playerInputs.Gameplay.Scream.performed += OnScream;
     }
 
     private void OnInteract(InputAction.CallbackContext callback)
     {
         OnInteractAction?.Invoke(this, EventArgs.Empty);
+        Debug.Log(callback);
+    }
+
+    public void OnScream(InputAction.CallbackContext callback)
+    {
+        OnScreamAction?.Invoke(this, EventArgs.Empty);
         Debug.Log(callback);
     }
 
