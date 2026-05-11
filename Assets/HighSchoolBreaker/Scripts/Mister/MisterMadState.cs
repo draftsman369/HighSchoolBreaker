@@ -10,6 +10,7 @@ public class MisterMadState : MisterState
         controller.agent.ResetPath();
         PlayerController.Instance.SetGameOver();
         controller.animator.SetTrigger("Mad");
+        AudioManager.Instance.PlaySFX("caugthSFX");
     }
 
     public override void Update()

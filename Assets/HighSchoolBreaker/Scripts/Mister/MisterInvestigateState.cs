@@ -47,6 +47,7 @@ public class MisterInvestigateState : MisterState
     public override void Exit()
     {
         controller.animator.ResetTrigger("Investigating");
+        timeSpentPatroling = 0f;
         base.Exit();
     }
 }

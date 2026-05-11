@@ -12,6 +12,7 @@ public class PlayerScaringState : State
         base.Enter();
         Debug.LogWarning("in boo state");
         player.Boo();
+        AudioManager.Instance.PlaySFX("screamSFX");
     }
 
     public override void Tick()

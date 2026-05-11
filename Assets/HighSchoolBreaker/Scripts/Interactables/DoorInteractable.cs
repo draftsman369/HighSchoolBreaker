@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DoorInteractable : MonoBehaviour, IInteractable
 {
-    private Animator animator;
+    [SerializeField] private Animator animator;
     public bool isDoorOpen = false;
     public bool isLocked = false;
 
@@ -22,6 +22,7 @@ public class DoorInteractable : MonoBehaviour, IInteractable
         Debug.Log("Interacted with door!");
         isDoorOpen = !isDoorOpen;
         animator.SetBool("IsDoorOpen", isDoorOpen);
+        AudioManager.Instance.PlaySFX("doorSFX");
         // Implement door opening logic here
     }
 
