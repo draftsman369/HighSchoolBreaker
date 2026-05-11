@@ -7,8 +7,32 @@ public abstract class State
         this.player = player;
     }
 
-    public virtual void Enter() { }
-    public virtual void Tick() { }
-    public virtual void FixedTick() { }
-    public virtual void Exit() { }
+    public virtual void Enter()
+    {
+        if(GameManager.Instance.GameWon || player.IsGameOver)
+        {
+            return;
+        }
+    }
+    public virtual void Tick()
+    {
+        if(GameManager.Instance.GameWon || player.IsGameOver)
+        {
+            return;
+        }
+    }
+    public virtual void FixedTick()
+    {
+        if(GameManager.Instance.GameWon || player.IsGameOver)
+        {
+            return;
+        }
+    }
+    public virtual void Exit()
+    {
+        if(GameManager.Instance.GameWon || player.IsGameOver)
+        {
+            return;
+        }
+    }
 }

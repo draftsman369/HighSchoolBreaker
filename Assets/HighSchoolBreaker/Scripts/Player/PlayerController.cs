@@ -1,5 +1,7 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
+using Unity.Cinemachine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -34,6 +36,15 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private GameObject playerVisual; // mesh or model
     private Locker currentLocker;
+
+
+    [Header("Remote Car")]
+    [SerializeField] private RemoteCarController remoteCar;
+
+    [Header("Cameras")]
+    [SerializeField] private CinemachineCamera playerCamera;
+    [SerializeField] private CinemachineCamera carCamera;
+
 
     public void EnterLocker(Locker locker, Transform hidePoint)
     {
@@ -88,19 +99,22 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        ChangeState(new PlayerIdleState(this));
-
         InputReader.Instance.OnScreamAction += OnScreamAction;
+        InputReader.Instance.OnControlCarAction += OnControlCarAction;
+        ChangeState(new PlayerIdleState(this));
+        SwitchToPlayerCamera();
     }
 
     private void OnEnable()
     {
         InputReader.Instance.OnScreamAction += OnScreamAction;
+        InputReader.Instance.OnControlCarAction += OnControlCarAction;
     }
 
     private void OnDisable()
     {
         InputReader.Instance.OnScreamAction -= OnScreamAction;
+        InputReader.Instance.OnControlCarAction -= OnControlCarAction;
     }
 
     public void OnScreamAction(object sender, EventArgs e)
@@ -118,6 +132,10 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(GameManager.Instance.GameWon || IsGameOver)
+        {
+            return;
+        }
         currentState?.FixedTick();
     }
 
@@ -159,13 +177,19 @@ public class PlayerController : MonoBehaviour
 
     public void UpdateAnimations()
     {
-        playerAnimator.SetBool("IsMoving", IsMoving);
+        bool shouldMove = moveDirection.sqrMagnitude > 0.01f;
+        playerAnimator.SetBool("IsMoving", shouldMove);
         playerAnimator.SetBool("IsSneaking", IsSneaking);
     }
 
     public void PlayGameOverAnimation()
     {
         playerAnimator.SetTrigger("GameOver");
+    }
+
+    public void PlayGameWonAnimation()
+    {
+        playerAnimator.SetTrigger("GameWon");
     }
 
     public void SetGameOver()
@@ -202,5 +226,65 @@ public class PlayerController : MonoBehaviour
         playerAnimator.ResetTrigger("Boo");
     }
 
+    public void SetRemoteCarTrigger()
+    {
+        playerAnimator.SetTrigger("RemoteCar");
+    }
 
+    public void ResetRemoteCarTrigger()
+    {
+        playerAnimator.ResetTrigger("RemoteCar");
+    }
+
+    public void RemoveMovement()
+    {
+        playerRigidbody.linearVelocity = Vector3.zero;
+        playerRigidbody.angularVelocity = Vector3.zero;
+        moveDirection = Vector3.zero;
+
+    }
+
+    //Car control
+    private void OnControlCarAction(object sender, EventArgs e)
+    {
+
+        if (currentState is PlayerCarControlState)
+        {
+            ChangeState(new PlayerIdleState(this));
+            return;
+        }
+
+        if (remoteCar == null)
+            return;
+
+        if (!remoteCar.IsDeployed)
+        {
+            remoteCar.Deploy();
+        }
+
+        if (!remoteCar.HasSignal || !remoteCar.HasEnergy)
+            return;
+
+        
+        ChangeState(new PlayerCarControlState(this, remoteCar));
+    }
+
+    public void SwitchToCarCamera()
+    {
+        playerCamera.Priority = 0;
+        carCamera.Priority = 20;
+    }
+
+    public void SwitchToPlayerCamera()
+    {
+        playerCamera.Priority = 20;
+        carCamera.Priority = 0;
+    }
+
+    public void StopMovement()
+    {
+        playerRigidbody.linearVelocity = Vector3.zero; // Unity 6
+        playerRigidbody.angularVelocity = Vector3.zero;
+        moveDirection = Vector3.zero;
+    }
 }

@@ -17,6 +17,7 @@ public class SelectedInteractable : MonoBehaviour
 
     private void Player_OnSelectedInteractChange(object sender, PlayerInteract.OnSelectedInteractableEventArgs e)
     {
+        
         if(e.selectedInteractable == interactable)
         {
             Show();
@@ -29,11 +30,13 @@ public class SelectedInteractable : MonoBehaviour
 
     public void Show()
     {
+        if(selectedVisual == null) return;
         selectedVisual.SetActive(true);
     }
 
     public void Hide()
     {
+        if(selectedVisual == null) return;
         selectedVisual.SetActive(false);
     }
 

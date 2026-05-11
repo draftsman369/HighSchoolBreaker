@@ -10,6 +10,7 @@ public class MisterWonderState : MisterState
     public override void Enter()
     {
         controller.agent.isStopped = true;
+        controller.agent.ResetPath();
         Debug.LogWarning("Wondering");
         controller.animator.SetTrigger("Wondering");
         base.Enter();
@@ -20,8 +21,7 @@ public class MisterWonderState : MisterState
         if(wonderTimer >= wonderDuration)
         {
             controller.ChangeState(controller.investigateState);
-            //controller.InvestigateNoise();
-            //return;
+            return;
         }
         
         if(controller.fieldOfView.canSeePlayer)

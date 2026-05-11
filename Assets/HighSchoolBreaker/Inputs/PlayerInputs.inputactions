@@ -41,6 +41,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ControlCar",
+                    "type": "Button",
+                    "id": "877c5110-2880-4be7-9ab7-b68511cadfa2",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -167,8 +176,8 @@
                 },
                 {
                     "name": "",
-                    "id": "ef12d303-bec4-49b9-ab99-e9aaf2dcde6f",
-                    "path": "<Keyboard>/c",
+                    "id": "71427501-5e5f-4d2f-a9b3-f2c82344d160",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -178,12 +187,23 @@
                 },
                 {
                     "name": "",
-                    "id": "71427501-5e5f-4d2f-a9b3-f2c82344d160",
-                    "path": "<Gamepad>/buttonEast",
+                    "id": "9f424403-ebe8-402c-851f-a185f9f0859b",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Scream",
+                    "action": "ControlCar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1e7d9185-ac4e-43a2-a256-5f3e4b0c513a",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ControlCar",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

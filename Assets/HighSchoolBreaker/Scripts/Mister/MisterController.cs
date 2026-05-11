@@ -2,8 +2,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+public enum MisterType
+{
+    staticMister,
+    dynamicMister
+}
+
 public class MisterController : MonoBehaviour
 {
+    //[SerializeFied] private MisterType misterType;
 
     public Animator animator{get; private set;}
 
@@ -13,7 +20,6 @@ public class MisterController : MonoBehaviour
     [SerializeField] private List<Transform> waypoinnts = new List<Transform>();
     public NavMeshAgent agent{get; private set;}
     int currentWaypointIndex = 0;
-
 
     //Investigation parameters
     private bool hasCaughtPlayer = false;
@@ -26,6 +32,7 @@ public class MisterController : MonoBehaviour
     public MisterMadState madState{get; private set;}
     public MisterWonderState wonderState{get; private set;}
     public MisterInvestigateState investigateState{get; private set;}
+    public MisterIdleState idleState{get; private set;}
     MisterState currentState;
     private void Awake()
     {
@@ -37,6 +44,7 @@ public class MisterController : MonoBehaviour
         madState = new MisterMadState(this);
         wonderState = new MisterWonderState(this);  
         investigateState = new MisterInvestigateState(this);
+        idleState = new MisterIdleState(this);
         currentState = patrolState;
     }
 
@@ -78,7 +86,7 @@ public class MisterController : MonoBehaviour
 
         NoisePosition = heardPosition;
         playerHeard = true;
-        ChangeState(new MisterWonderState(this));
+        ChangeState(wonderState);
     }
 
     public void InvestigateNoise()
@@ -87,10 +95,17 @@ public class MisterController : MonoBehaviour
         {
             agent.SetDestination(NoisePosition);
         }
+        
         if(agent.remainingDistance < 0.5f)
         {
             playerHeard = false;
-            ChangeState(patrolState);
+            //agent.isStopped = true;
+            //ChangeState(idleState);
         }
+    }
+
+    public void SetDestination()
+    {
+        agent.SetDestination(waypoinnts[currentWaypointIndex].position);
     }
 }

@@ -4,38 +4,44 @@ using System;
 public class PlayerInteract : MonoBehaviour
 {
     public static PlayerInteract Instance { get; private set; }
-    public GameObject player;
 
     public event EventHandler<OnSelectedInteractableEventArgs> OnSelectedInteractable;
+
     public class OnSelectedInteractableEventArgs : EventArgs
     {
         public IInteractable selectedInteractable;
     }
 
-    [SerializeField] private float interactDistance;
-    [SerializeField] LayerMask interactLayerMask;
+    [Header("Interaction")]
+    [SerializeField] private float interactDistance = 2f;
+    [SerializeField] private float interactRadius = 1.2f;
+    [SerializeField] private LayerMask interactableLayer;
 
-    Vector3 lastInteractDirection;
-    IInteractable selectedInteractable;
+    [Header("References")]
+    [SerializeField] private Transform orientation;
+
+    private IInteractable selectedInteractable;
 
     private void Awake()
     {
         if (Instance != null)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
+            return;
         }
+
         Instance = this;
+    }
+
+    private void Start()
+    {
+        InputReader.Instance.OnInteractAction += Interact;
     }
 
     private void Update()
     {
         HandleInteraction();
     }
-    private void Start()
-    {
-        InputReader.Instance.OnInteractAction += Interact;
-    }
-
 
     private void Interact(object sender, EventArgs e)
     {
@@ -45,43 +51,98 @@ public class PlayerInteract : MonoBehaviour
             return;
         }
 
-         selectedInteractable?.Interact();
-        
+        selectedInteractable?.Interact();
     }
-    
+
     private void HandleInteraction()
     {
-        Vector2 moveInput = InputReader.Instance.MoveInput;
-        Vector3 moveDirection = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
-        if(moveDirection != Vector3.zero)
+        Collider[] hits = Physics.OverlapSphere(
+            transform.position,
+            interactRadius
+        );
+
+        IInteractable bestInteractable = null;
+        float bestScore = -999f;
+
+        Vector3 forward = orientation != null
+            ? orientation.forward
+            : transform.forward;
+
+        forward.y = 0f;
+        forward.Normalize();
+
+        foreach (Collider hit in hits)
         {
-            lastInteractDirection = moveDirection;
+            if (!hit.TryGetComponent(out IInteractable interactable))
+                continue;
+
+            Vector3 directionToObject = hit.transform.position - transform.position;
+            directionToObject.y = 0f;
+
+            float distance = directionToObject.magnitude;
+
+            if (distance > interactDistance)
+                continue;
+
+            directionToObject.Normalize();
+
+            float dot = Vector3.Dot(forward, directionToObject);
+
+            if (dot < 0.25f)
+                continue;
+
+            float score = dot * 2f - distance;
+
+            if (score > bestScore)
+            {
+                bestScore = score;
+                bestInteractable = interactable;
+            }
         }
 
-        if(Physics.Raycast(this.transform.position, lastInteractDirection, out RaycastHit hit, interactDistance, interactLayerMask))
+        SetSelectedInteractable(bestInteractable);
+
+        if (selectedInteractable != null)
         {
-            if(hit.transform.TryGetComponent(out IInteractable interactable))
-            {
-                SetSelectedInteractable(interactable);
-            }
-            else
-            {
-                SetSelectedInteractable(null);
-            }
+            UIManager.Instance.ShowInteractText(selectedInteractable.GetInteractText());
         }
         else
         {
-            SetSelectedInteractable(null);
+            UIManager.Instance.HideInteractText();
         }
     }
 
     private void SetSelectedInteractable(IInteractable interactable)
     {
-        this.selectedInteractable = interactable;
-        OnSelectedInteractable?.Invoke(this, new OnSelectedInteractableEventArgs {
+        if (selectedInteractable == interactable)
+            return;
+
+        selectedInteractable = interactable;
+
+        OnSelectedInteractable?.Invoke(this, new OnSelectedInteractableEventArgs
+        {
             selectedInteractable = selectedInteractable
         });
-
     }
 
+    private void OnDestroy()
+    {
+        if (InputReader.Instance != null)
+        {
+            InputReader.Instance.OnInteractAction -= Interact;
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, interactRadius);
+
+        Vector3 forward = orientation != null
+            ? orientation.forward
+            : transform.forward;
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawRay(transform.position, forward.normalized * interactDistance);
+    }
 }

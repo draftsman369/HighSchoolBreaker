@@ -4,9 +4,9 @@ using System;
 
 public class InputReader : MonoBehaviour
 {
-
     public event EventHandler OnInteractAction;
     public event EventHandler OnScreamAction;
+    public event EventHandler OnControlCarAction;
 
     public static InputReader Instance;
 
@@ -17,8 +17,6 @@ public class InputReader : MonoBehaviour
 
     private bool isSneaking;
     public bool IsSneaking => isSneaking;
-    private bool isScreaming;
-    public bool IsScreaming => isScreaming;
 
     private void Awake()
     {
@@ -33,18 +31,22 @@ public class InputReader : MonoBehaviour
 
         playerInputs.Gameplay.Interact.performed += OnInteract;
         playerInputs.Gameplay.Scream.performed += OnScream;
+        playerInputs.Gameplay.ControlCar.performed += OnControlCar;
     }
 
     private void OnInteract(InputAction.CallbackContext callback)
     {
         OnInteractAction?.Invoke(this, EventArgs.Empty);
-        Debug.Log(callback);
     }
 
-    public void OnScream(InputAction.CallbackContext callback)
+    private void OnScream(InputAction.CallbackContext callback)
     {
         OnScreamAction?.Invoke(this, EventArgs.Empty);
-        Debug.Log(callback);
+    }
+
+    private void OnControlCar(InputAction.CallbackContext callback)
+    {
+        OnControlCarAction?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnEnable()

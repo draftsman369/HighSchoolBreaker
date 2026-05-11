@@ -2,6 +2,12 @@ public class PlayerIdleState : State
 {
     public PlayerIdleState(PlayerController player) : base(player) { }
 
+    public override void Enter()
+    {
+            player.StopMovement();
+            //player.UpdateAnimations();
+    }
+
     public override void Tick()
     {
         player.UpdateAnimations();

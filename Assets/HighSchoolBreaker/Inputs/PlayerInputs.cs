@@ -127,6 +127,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ControlCar"",
+                    ""type"": ""Button"",
+                    ""id"": ""877c5110-2880-4be7-9ab7-b68511cadfa2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -253,8 +262,8 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""ef12d303-bec4-49b9-ab99-e9aaf2dcde6f"",
-                    ""path"": ""<Keyboard>/c"",
+                    ""id"": ""71427501-5e5f-4d2f-a9b3-f2c82344d160"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -264,12 +273,23 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""71427501-5e5f-4d2f-a9b3-f2c82344d160"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""id"": ""9f424403-ebe8-402c-851f-a185f9f0859b"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Scream"",
+                    ""action"": ""ControlCar"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1e7d9185-ac4e-43a2-a256-5f3e4b0c513a"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ControlCar"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -284,6 +304,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_Gameplay_Sneak = m_Gameplay.FindAction("Sneak", throwIfNotFound: true);
         m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
         m_Gameplay_Scream = m_Gameplay.FindAction("Scream", throwIfNotFound: true);
+        m_Gameplay_ControlCar = m_Gameplay.FindAction("ControlCar", throwIfNotFound: true);
     }
 
     ~@PlayerInputs()
@@ -368,6 +389,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Sneak;
     private readonly InputAction m_Gameplay_Interact;
     private readonly InputAction m_Gameplay_Scream;
+    private readonly InputAction m_Gameplay_ControlCar;
     /// <summary>
     /// Provides access to input actions defined in input action map "Gameplay".
     /// </summary>
@@ -395,6 +417,10 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Gameplay/Scream".
         /// </summary>
         public InputAction @Scream => m_Wrapper.m_Gameplay_Scream;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/ControlCar".
+        /// </summary>
+        public InputAction @ControlCar => m_Wrapper.m_Gameplay_ControlCar;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -433,6 +459,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Scream.started += instance.OnScream;
             @Scream.performed += instance.OnScream;
             @Scream.canceled += instance.OnScream;
+            @ControlCar.started += instance.OnControlCar;
+            @ControlCar.performed += instance.OnControlCar;
+            @ControlCar.canceled += instance.OnControlCar;
         }
 
         /// <summary>
@@ -456,6 +485,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Scream.started -= instance.OnScream;
             @Scream.performed -= instance.OnScream;
             @Scream.canceled -= instance.OnScream;
+            @ControlCar.started -= instance.OnControlCar;
+            @ControlCar.performed -= instance.OnControlCar;
+            @ControlCar.canceled -= instance.OnControlCar;
         }
 
         /// <summary>
@@ -524,5 +556,12 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnScream(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ControlCar" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnControlCar(InputAction.CallbackContext context);
     }
 }

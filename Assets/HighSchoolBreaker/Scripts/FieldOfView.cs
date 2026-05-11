@@ -18,6 +18,7 @@ public class FieldOfView : MonoBehaviour
 
     void Update()
     {
+        if(PlayerController.Instance.IsHidden) return;
         canSeePlayer = CanSeePlayer();
         if(canSeePlayer)
         {

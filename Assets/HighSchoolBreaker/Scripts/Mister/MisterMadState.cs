@@ -7,8 +7,9 @@ public class MisterMadState : MisterState
     public override void Enter()
     {
         controller.agent.isStopped = true;
+        controller.agent.ResetPath();
         PlayerController.Instance.SetGameOver();
-        animator.SetTrigger("Mad");
+        controller.animator.SetTrigger("Mad");
     }
 
     public override void Update()

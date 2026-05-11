@@ -19,6 +19,11 @@ public class LevelLoader : MonoBehaviour
         StartCoroutine(LoadLevel());
     }
 
+    public void StartGame()
+    {
+        StartCoroutine(StartLevel());
+    }
+
     private IEnumerator LoadLevel()
     {
         yield return new WaitForSeconds(3f);
@@ -28,6 +33,23 @@ public class LevelLoader : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
+    }
+
+    private IEnumerator StartLevel()
+    {
+        //yield return new WaitForSeconds(1f);
+
+        animator.SetTrigger("Transition");
+        Debug.Log("Starting level reload...");
+
+        yield return new WaitForSeconds(2f);
+
+        SceneManager.LoadScene(1);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }

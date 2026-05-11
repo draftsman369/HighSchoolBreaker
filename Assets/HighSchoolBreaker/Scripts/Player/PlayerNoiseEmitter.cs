@@ -47,7 +47,7 @@ public class PlayerNoiseEmitter : MonoBehaviour
 
         foreach (Collider hit in hits)
         {
-            Patroller patroller = hit.GetComponentInParent<Patroller>();
+            MisterController patroller = hit.GetComponentInParent<MisterController>();
 
             if (patroller != null)
             {

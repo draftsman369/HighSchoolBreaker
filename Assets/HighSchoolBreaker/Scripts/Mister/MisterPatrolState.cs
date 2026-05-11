@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MisterPatrolState : MisterState
 {
@@ -10,7 +11,9 @@ public class MisterPatrolState : MisterState
     {
 
         //Debug.LogWarning("Patrolling");
-        animator.SetTrigger("Patrolling");
+        controller.agent.isStopped = false;
+        controller.SetDestination();
+        controller.animator.SetTrigger("Patrolling");
     }
 
     public override void Update()
@@ -34,7 +37,8 @@ public class MisterPatrolState : MisterState
     public override void Exit()
     {
         //Debug.LogWarning("Exiting Patrol State");
-        animator.ResetTrigger("Patrolling");
+        controller.agent.isStopped = true;
+        controller.animator.ResetTrigger("Patrolling");
     }
     
 }
