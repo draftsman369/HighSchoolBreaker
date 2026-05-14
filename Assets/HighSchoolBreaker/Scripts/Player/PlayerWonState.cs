@@ -7,6 +7,7 @@ public class PlayerWonState : State
     {
         GameManager.Instance.SetGameWon();
         player.PlayGameWonAnimation();
+        player.SwitchToWinCamera();
         Debug.Log("Player has won the game!");
         base.Enter();
     }

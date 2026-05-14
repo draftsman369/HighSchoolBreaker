@@ -2317,7 +2317,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: -0.027690185, y: -0.04108958, z: 0.01016597, w: 0.99872}
-  m_LocalPosition: {x: -2, y: 0.59, z: -10.98}
+  m_LocalPosition: {x: -2, y: 0.74, z: -10.99}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6493,6 +6493,7 @@ GameObject:
   m_Component:
   - component: {fileID: 988316497}
   - component: {fileID: 988316496}
+  - component: {fileID: 988316498}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -6552,12 +6553,29 @@ Transform:
   m_GameObject: {fileID: 988316495}
   serializedVersion: 2
   m_LocalRotation: {x: -0.027690185, y: -0.04108958, z: 0.01016597, w: 0.99872}
-  m_LocalPosition: {x: -2, y: 0.59, z: -10.98}
+  m_LocalPosition: {x: -2, y: 0.74, z: -10.99}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -3.123, y: -4.747, z: 1.296}
+--- !u!114 &988316498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 988316495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineBasicMultiChannelPerlin
+  NoiseProfile: {fileID: 11400000, guid: e9ce97b7a206dc64d90931ea044e0c72, type: 2}
+  PivotOffset: {x: 0, y: 0, z: 0}
+  AmplitudeGain: 1.45
+  FrequencyGain: 0.03
+  m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1001 &994119353
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11452,7 +11470,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0, g: 0, b: 0, a: 1}
+    m_NormalColor: {r: 0, g: 0, b: 0, a: 0.54509807}
     m_HighlightedColor: {r: 0.9433962, g: 0.77667993, b: 0.06674972, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9339623, g: 0.8173322, b: 0.19824673, a: 1}
@@ -11779,7 +11797,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RawImage
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8679245, g: 0.8679245, b: 0.8679245, a: 0.94509804}
+  m_Color: {r: 0.8679245, g: 0.8679245, b: 0.8679245, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

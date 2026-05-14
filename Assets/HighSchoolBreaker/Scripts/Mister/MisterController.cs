@@ -26,6 +26,7 @@ public class MisterController : MonoBehaviour
     private bool CanHearNoise => currentState is MisterPatrolState;
     public Vector3 NoisePosition { get; private set; }
     public bool playerHeard = false;
+    [SerializeField] private FootStepPlayer footStepPlayer;
 
     //States
     public MisterPatrolState patrolState{get; private set;}
@@ -50,6 +51,7 @@ public class MisterController : MonoBehaviour
 
     private void Start()
     {
+        footStepPlayer = this.GetComponent<FootStepPlayer>();
         ChangeState(patrolState);
     }
 
@@ -68,7 +70,8 @@ public class MisterController : MonoBehaviour
 
     public void Patrol()
     {
-        
+        float footStepInterval = Random.Range(.5f, .7f);
+        footStepPlayer.PlayFootStep(footStepInterval, 1f, 1f);
         if(agent.remainingDistance < 0.5f)
         {
             currentWaypointIndex = (currentWaypointIndex + 1) % waypoinnts.Count;
@@ -91,6 +94,8 @@ public class MisterController : MonoBehaviour
 
     public void InvestigateNoise()
     {
+        float footStepInterval = Random.Range(.5f, .7f);
+        footStepPlayer.PlayFootStep(footStepInterval, 1f, 1f);
         if (NoisePosition != Vector3.zero)
         {
             agent.SetDestination(NoisePosition);

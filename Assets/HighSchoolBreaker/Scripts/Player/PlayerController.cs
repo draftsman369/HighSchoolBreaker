@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     [SerializeField] private Rigidbody playerRigidbody;
     [SerializeField] private Animator playerAnimator;
+    [SerializeField] private FootStepPlayer footStepPlayer;
     private Collider playerCollider;
 
     [Header("Movement")]
@@ -44,6 +45,7 @@ public class PlayerController : MonoBehaviour
     [Header("Cameras")]
     [SerializeField] private CinemachineCamera playerCamera;
     [SerializeField] private CinemachineCamera carCamera;
+    [SerializeField] private CinemachineCamera winCamera;
 
 
     public void EnterLocker(Locker locker, Transform hidePoint)
@@ -101,6 +103,7 @@ public class PlayerController : MonoBehaviour
     {
         InputReader.Instance.OnScreamAction += OnScreamAction;
         InputReader.Instance.OnControlCarAction += OnControlCarAction;
+        footStepPlayer = this.GetComponent<FootStepPlayer>();
         ChangeState(new PlayerIdleState(this));
         SwitchToPlayerCamera();
     }
@@ -154,8 +157,17 @@ public class PlayerController : MonoBehaviour
         float currentSpeed = IsSneaking ? sneakSpeed : moveSpeed;
 
         Vector3 velocity = moveDirection.normalized * currentSpeed * Time.fixedDeltaTime;
-
+        float footStepInterval = IsSneaking ? .5f : .3f;
         playerRigidbody.MovePosition(playerRigidbody.position + velocity);
+
+        if(IsSneaking)
+        {
+            footStepPlayer.PlayFootStep(.5f, 1.14f, .02f);
+        }
+        else
+        {
+            footStepPlayer.PlayFootStep(.3f, 1.12f, .3f);
+        }
     }
 
     public void Rotate()
@@ -281,10 +293,18 @@ public class PlayerController : MonoBehaviour
         carCamera.Priority = 0;
     }
 
+    public void SwitchToWinCamera()
+    {
+        winCamera.Priority = 20;
+        playerCamera.Priority = 0;
+        carCamera.Priority = 0;
+    }
+
     public void StopMovement()
     {
         playerRigidbody.linearVelocity = Vector3.zero; // Unity 6
         playerRigidbody.angularVelocity = Vector3.zero;
         moveDirection = Vector3.zero;
     }
+
 }

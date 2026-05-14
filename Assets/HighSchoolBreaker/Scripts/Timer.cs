@@ -43,4 +43,11 @@ public class Timer : MonoBehaviour
     {
         IsTimerStopped = false;
     }
+
+    public void ResetTimer()
+    {
+        timer = 0f;
+        timerText.text = "00:00";
+        IsTimerStopped = true;
+    }
 }

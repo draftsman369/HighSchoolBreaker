@@ -35,6 +35,7 @@ public class Locker : MonoBehaviour, IInteractable
         currentPlayer = player;
 
         player.EnterLocker(this, hidePoint);
+        AudioManager.Instance.PlaySFX("lockerSFX");
     }
 
     public void ExitLocker()
@@ -43,6 +44,7 @@ public class Locker : MonoBehaviour, IInteractable
 
         currentPlayer.ExitLocker();
         currentPlayer = null;
+        AudioManager.Instance.PlaySFX("lockerSFX");
     }
 
     public string GetInteractText()

@@ -13,6 +13,7 @@ public class MisterWonderState : MisterState
         controller.agent.ResetPath();
         Debug.LogWarning("Wondering");
         controller.animator.SetTrigger("Wondering");
+        AudioManager.Instance.PlaySFX("huhSFX");
         base.Enter();
     }
 
