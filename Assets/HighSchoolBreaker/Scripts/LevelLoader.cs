@@ -8,10 +8,23 @@ public class LevelLoader : MonoBehaviour
 
     public Animator animator;
 
+
+private bool isLoadingNextLevel = false;
+
+
     private void Awake()
     {
         Instance = this;
         //animator = GetComponent<Animator>();
+    }
+
+    private void Update()
+    {
+        if(!isLoadingNextLevel && SceneManager.GetActiveScene().buildIndex == 2)
+        {
+            isLoadingNextLevel = true;
+            LoadLevel(3, 5f);
+        }
     }
 
     public void ReloadLevel()
@@ -24,9 +37,9 @@ public class LevelLoader : MonoBehaviour
         StartCoroutine(StartLevel());
     }
 
-    public void StartLevel2_()
+    public void LoadElevator()
     {
-        StartCoroutine(StartLevel2());
+        StartCoroutine(StartElevator());
     }
 
     private IEnumerator LoadLevel()
@@ -42,6 +55,7 @@ public class LevelLoader : MonoBehaviour
         Timer.Instance.ResetTimer();
         Timer.Instance.StartTimer();
         SceneManager.LoadScene(1);
+        isLoadingNextLevel = false;
     }
 
     public void LoadMainMenu()
@@ -77,17 +91,44 @@ public class LevelLoader : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
-    private IEnumerator StartLevel2()
+    private IEnumerator StartElevator()
     {
         //yield return new WaitForSeconds(1f);
 
         animator.SetTrigger("Transition");
-        Debug.Log("Starting level reload...");
+        Debug.Log("Starting elevator level...");
 
         yield return new WaitForSeconds(2f);
 
         SceneManager.LoadScene(2);
     }
+
+    private void QuitEleveator(int sceneIndex)
+    {
+        if(sceneIndex == 2)
+        {
+            StartCoroutine(LoadMainMenuCoroutine());
+        }
+    }
+
+    public void LoadLevel(int levelIndex, float delay)
+    {
+        StartCoroutine(LoadLevelCoroutine(levelIndex, delay));
+    }
+    public IEnumerator LoadLevelCoroutine(int levelIndex, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        animator.SetTrigger("Transition");
+        Debug.Log($"Starting level {levelIndex} load...");
+
+        yield return new WaitForSeconds(2f);
+
+        SceneManager.LoadScene(levelIndex);
+    }
+
+
+
 
     public void QuitGame()
     {

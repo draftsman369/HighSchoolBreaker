@@ -76,7 +76,17 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        
+        if(SceneManager.GetActiveScene().buildIndex == 2 )
+        {
+            audioSource.Stop();
+        }
+        else
+        {
+            if (!audioSource.isPlaying)
+            {
+                audioSource.Play();
+            }
+        }
     }
 
     public void StopAudio()

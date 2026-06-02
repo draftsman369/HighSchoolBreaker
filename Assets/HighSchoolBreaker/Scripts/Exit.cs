@@ -13,7 +13,7 @@ public class Exit : MonoBehaviour
     {
         if(exitType == ExitType.LevelExit)
         {
-            LevelLoader.Instance.StartLevel2_();
+            LevelLoader.Instance.LoadLevel(2, 0f);
             return;
         }
         if (other.CompareTag("Player"))
